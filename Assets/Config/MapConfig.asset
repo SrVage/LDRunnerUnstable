@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prefabs:
   - {fileID: 6069779660028405431, guid: 409b349296b5b47488fd3dfd8987e0a5, type: 3}
-  MinLenght: 3
-  MaxLenght: 10
+  - {fileID: 6069779660028405431, guid: c1cfaf65de39e954bb26bdb2b1111765, type: 3}
+  MinLenght: 0.8
+  MaxLenght: 1.2

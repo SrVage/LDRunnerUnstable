@@ -20,6 +20,9 @@ namespace Client.Systems
                     ref var renderer = ref _renderer.Get2(rend).MeshRenderer;
                     var materials = renderer.materials;
                     materials[1].SetColor("_EmissionColor", Color.Lerp(Color.black, Color.red, radiation));
+                    
+                    materials[1].color = Color.Lerp(Color.black, new Color(0.9f, 0.6f, 0), radiation);
+                    renderer.materials = materials;
                 }
             }
         }

@@ -9,7 +9,6 @@ namespace Client.Systems
     {
         private readonly EcsFilter<ObjectTransform, Player> _player;
         private readonly EcsFilter<CameraEntity> _camera;
-        private Vector3 _offset = new Vector3(3, 3, -10);
 
         public CameraFollowSystem(CinemachineVirtualCamera camera, EcsWorld _world)
         {

@@ -19,6 +19,7 @@ namespace Client.Systems
                     {
                         _player.GetEntity(player).Del<Physic>();
                         _player.Get3(player).Animator.SetTrigger("Death");
+                        _player.GetEntity(player).Get<Death>().Time = 4f;
                     }
                 }
             }

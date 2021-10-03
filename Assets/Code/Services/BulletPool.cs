@@ -14,6 +14,11 @@ namespace Client.Services
             _bulletPool = new Queue<GameObject>();
             _bulletPrefab = bulletPrefab;
             _poolRoot = new GameObject("rootPool").transform;
+            for (int i = 0; i < 10; i++)
+            {
+                var bulletGameObj = GameObject.Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity);
+                ReturnToPool(bulletGameObj);
+            }
         }
 
         public GameObject GetBullet()
@@ -32,6 +37,7 @@ namespace Client.Services
         public void ReturnToPool(GameObject bullet)
         {
             bullet.transform.position = Vector3.zero;
+            bullet.GetComponent<Rigidbody>().velocity = Vector3.zero;
             bullet.transform.SetParent(_poolRoot);
             bullet.SetActive(false);
             _bulletPool.Enqueue(bullet);

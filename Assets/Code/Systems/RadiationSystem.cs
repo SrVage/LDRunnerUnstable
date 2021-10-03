@@ -8,26 +8,45 @@ namespace Client.Systems
     {
         private readonly EcsFilter<Radiation> _radiation;
         private readonly EcsFilter<GetPotion> _potion;
+        private readonly EcsFilter<PlayState> _playState;
         public void Run()
         {
-            foreach (var potion in _potion)
+            foreach (var play in _playState)
             {
-                foreach (var rad in _radiation)
+                ref var playState = ref _playState.Get1(play).PlayStates;
+                if (playState == PlayStates.Play)
                 {
-                    ref var radiation = ref _radiation.Get1(rad).RadiationValue;
-                    if (radiation > 0.5f)
-                        radiation -= 0.5f;
-                    else
-                        radiation = 0;
+                    foreach (var potion in _potion)
+                    {
+                        foreach (var rad in _radiation)
+                        {
+                            ref var radiation = ref _radiation.Get1(rad).RadiationValue;
+                            if (radiation > 0.5f)
+                                radiation -= 0.5f;
+                            else
+                                radiation = 0;
+                        }
+                        _potion.GetEntity(potion).Destroy();
+                    }
+                    if (_radiation.IsEmpty()) return;
+                    foreach (var rad in _radiation)
+                    {
+                        ref var radiation = ref _radiation.Get1(rad).RadiationValue;
+                        radiation += (Time.deltaTime / 20);
+                    }
                 }
-                _potion.GetEntity(potion).Destroy();
+
+                if (playState == PlayStates.Menu)
+                {
+                    if (_radiation.IsEmpty()) return;
+                    foreach (var rad in _radiation)
+                    {
+                        ref var radiation = ref _radiation.Get1(rad).RadiationValue;
+                        radiation = 0;
+                    }
+                }
             }
-            if (_radiation.IsEmpty()) return;
-            foreach (var rad in _radiation)
-            {
-                ref var radiation = ref _radiation.Get1(rad).RadiationValue;
-                radiation += (Time.deltaTime / 20);
-            }
+
         }
     }
 }

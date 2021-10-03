@@ -11,6 +11,7 @@ namespace Client.Systems
         private readonly LevelGeneratorConfig _levelGeneratorConfig;
         private readonly EcsFilter<BlockCount> _count;
         private readonly EcsFilter<Block, ObjectTransform> _block;
+        private readonly EcsFilter<PlayState> _playState;
         private readonly EcsWorld _world;
 
 
@@ -40,32 +41,56 @@ namespace Client.Systems
 
         public void Run()
         {
-            if (_block.GetEntitiesCount() > 6) return;
-            Vector3 endPoint = Vector3.zero;
-            foreach (var c in _count)
+            foreach (var play in _playState)
             {
-                ref var count = ref _count.Get1(c).Count;
-                foreach (var block in _block)
+                
+                ref var playState = ref _playState.Get1(play).PlayStates;
+                if (playState == PlayStates.Menu)
                 {
-                    ref var blockEntity = ref _block.Get1(block);
-                    if (blockEntity.Count == count)
+                    foreach (var block in _block)
                     {
-                        endPoint = blockEntity.EndPoint;
-                        break;
+                        _block.GetEntity(block).Get<Destroy>();
+                    }
+                    foreach (var c in _count)
+                    {
+                        ref var count = ref _count.Get1(c).Count;
+                        count = 0;
                     }
                 }
 
-
-                Vector3 offset = new Vector3(Random.Range(1, 3), Random.Range(-2, 2), 0);
-                var newBlock =
-                    GameObject.Instantiate(
-                        _levelGeneratorConfig.Prefabs[Random.Range(0, _levelGeneratorConfig.Prefabs.Length - 1)],
-                        (endPoint + offset), Quaternion.identity);
-                newBlock.transform.localScale =
-                    new Vector3(1 * Random.Range(_levelGeneratorConfig.MinLenght, _levelGeneratorConfig.MaxLenght), 1,
-                        1);
-                CreateBlockEntity(newBlock, ref count);
+                if (playState == PlayStates.Play)
+                {
+                    if (_block.GetEntitiesCount() > 3) return;
+                                Vector3 endPoint = Vector3.zero;
+                                foreach (var c in _count)
+                                {
+                                    ref var count = ref _count.Get1(c).Count;
+                                    foreach (var block in _block)
+                                    {
+                                        ref var blockEntity = ref _block.Get1(block);
+                                        if (blockEntity.Count == count)
+                                        {
+                                            endPoint = blockEntity.EndPoint;
+                                            break;
+                                        }
+                                    }
+                    
+                    
+                                    Vector3 offset = new Vector3(Random.Range(2, 4), Random.Range(-2, 2), 0);
+                                    Vector3 position = new Vector3(endPoint.x + offset.x,
+                                        Mathf.Clamp((endPoint.y + offset.y), -15, 15), 0);
+                                    var newBlock =
+                                        GameObject.Instantiate(
+                                            _levelGeneratorConfig.Prefabs[Random.Range(0, _levelGeneratorConfig.Prefabs.Length)],
+                                            position, Quaternion.identity);
+                                    newBlock.transform.localScale =
+                                        new Vector3(1 * Random.Range(_levelGeneratorConfig.MinLenght, _levelGeneratorConfig.MaxLenght), 1,
+                                            1);
+                                    CreateBlockEntity(newBlock, ref count);
+                                }
+                }
             }
+            
         }
 
 

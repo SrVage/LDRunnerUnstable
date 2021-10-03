@@ -6,7 +6,7 @@ namespace Client.Systems
 {
     public class DestroyBlockSystem:IEcsRunSystem
     {
-        private readonly EcsFilter<Block, ObjectTransform> _block;
+        private readonly EcsFilter<Block, ObjectTransform>.Exclude<Destroy> _block;
         private readonly EcsFilter<ObjectTransform, Player> _player;
         public void Run()
         {
@@ -16,10 +16,9 @@ namespace Client.Systems
                 foreach (var block in _block)
                 {
                     ref var blockTransform = ref _block.Get2(block).Transform;
-                    if (blockTransform.position.x< play.position.x-15)
+                    if (blockTransform.position.x< play.position.x-25)
                     {
-                        GameObject.Destroy(blockTransform.gameObject);
-                        _block.GetEntity(block).Destroy();
+                        _block.GetEntity(block).Get<Destroy>();
                     }
                 }
             }

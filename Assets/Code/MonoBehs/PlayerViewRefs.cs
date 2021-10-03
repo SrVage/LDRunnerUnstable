@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Client.MonoBehs
 {
@@ -7,5 +8,6 @@ namespace Client.MonoBehs
         public Transform GunPosition;
         public Animator Animator;
         public SkinnedMeshRenderer MeshRenderer;
+        public ParticleSystem ParticleSystem;
     }
 }

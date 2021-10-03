@@ -18,8 +18,10 @@ namespace Client {
         EcsWorld _world;
         EcsSystems _systems;
 
-        void Start () {
-            
+        void Start ()
+        {
+            Screen.orientation = ScreenOrientation.Landscape;
+            Application.targetFrameRate = 60;
             _world = new EcsWorld ();
             _systems = new EcsSystems (_world);
 #if UNITY_EDITOR
@@ -29,10 +31,10 @@ namespace Client {
             _systems
                 // register your systems here, for example:
                 .Add (new PlayerInitializeSystem())
+                .Add(new LevelGeneratorSystem())
                 .Add (new InputSystem())
                 .Add(new PlayerMoveSystem())
                 .Add(new CameraFollowSystem(_camera, _world))
-                .Add(new LevelGeneratorSystem())
                 .Add(new DestroyBlockSystem())
                 .Add(new GunAimingSystem())
                 .Add(new GunFireSystem())
@@ -42,6 +44,9 @@ namespace Client {
                 .Add(new PlayerAnimationSystem())
                 .Add(new WoundsColorSystem())
                 .Add(new DeathSystem())
+                .Add(new ExplosionSystem())
+                .Add(new DestroySystem())
+                .Add(new DestroyBulletSystem())
                 
                 // register one-frame components (order is important), for example:
                 // .OneFrame<TestComponent1> ()

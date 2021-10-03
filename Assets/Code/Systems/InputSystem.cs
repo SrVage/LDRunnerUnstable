@@ -25,9 +25,18 @@ namespace Client.Systems
                _world.NewEntity().Get<TouchTime>();
                _touchTime = 0;
             }
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && Input.mousePosition.x<Screen.width-300)
             {
                 _touchTime += Time.deltaTime;
+                if (_touchTime >= 0.2f)
+                {
+                    foreach (var touch in _touch)
+                    {
+                        ref var entity = ref _touch.GetEntity(touch);
+                        entity.Get<InputTouch>();
+                        entity.Get<TouchTime>().Time = 0.2f;
+                    }
+                }
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -41,7 +50,7 @@ namespace Client.Systems
             }
 
 
-            if (Input.GetMouseButtonDown(1))
+            /*if (Input.GetMouseButtonDown(1))
             {
                 _touchPosition = Input.mousePosition.y;
                 _world.NewEntity().Get<Aim>();
@@ -61,7 +70,7 @@ namespace Client.Systems
                 {
                     _aim.GetEntity(aim).Get<InputTouch>();
                 }
-            }
+            }*/
         }
     }
 }

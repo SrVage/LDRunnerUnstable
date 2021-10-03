@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GunConfig
   m_EditorClassIdentifier: 
   GunPrefab: {fileID: 1866977581761236918, guid: 1f01312b6fcfff845894748507844576, type: 3}
-  RechargeTime: 0.3
+  RechargeTime: 0.5

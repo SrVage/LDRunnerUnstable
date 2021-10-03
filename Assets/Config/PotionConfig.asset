@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PotionConfig
   m_EditorClassIdentifier: 
   PotionPrefab: {fileID: 6973684480332221002, guid: 9acc2ceb1fcd10048a48094b1200901c, type: 3}
-  MinTime: 3
-  MaxTime: 7
+  MinTime: 4
+  MaxTime: 6

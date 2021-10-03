@@ -7,7 +7,7 @@ namespace Client.Systems
 {
     public class PlayerMoveSystem:IEcsRunSystem
     {
-        private readonly EcsFilter<ObjectTransform, Player, Physic> _player;
+        private readonly EcsFilter<ObjectTransform, Player, Physic>.Exclude<Death> _player;
         private readonly EcsFilter<InputTouch, TouchTime> _touch;
         private readonly PlayerConfig _playerConfig;
         
@@ -18,6 +18,8 @@ namespace Client.Systems
                 ref var physic = ref _player.Get3(player);
                 if (Mathf.Abs(physic.Rigidbody.velocity.y)<0.01f)
                     physic.Rigidbody.velocity = new Vector3(_playerConfig.PlayerSpeed, physic.Rigidbody.velocity.y, 0);
+                if (physic.Rigidbody.velocity.y < -40)
+                    _player.GetEntity(player).Get<Death>().Time = 1;
             }
             foreach (var touch in _touch)
             {

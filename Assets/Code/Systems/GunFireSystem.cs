@@ -41,10 +41,13 @@ namespace Client.Systems
                             bullet.transform.position = firePosition.position;
                             Vector3 direction = new Vector3(1*Mathf.Cos(angle*Mathf.Deg2Rad), 1*Mathf.Sin(angle*Mathf.Deg2Rad), 0).normalized;
                             bullet.GetComponent<Rigidbody>().AddForce(direction*_bulletConfig.BulletForce, ForceMode.Impulse);
+                            var bulletEntity = _world.NewEntity();
+                            bulletEntity.Get<Bullet>().Time = 3;
+                            bulletEntity.Get<ObjectTransform>().GameObject = bullet;
                         }
                     }
                 }
-                _aim.GetEntity(aim).Destroy();
+                _aim.GetEntity(aim).Del<InputTouch>();
             }
         }
     }
